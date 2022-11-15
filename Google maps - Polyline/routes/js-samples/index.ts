@@ -8,7 +8,7 @@
 // the first trans-Pacific flight between Oakland, CA, and Brisbane,
 // Australia which was made by Charles Kingsford Smith.
 
-import { Connection } from "mysql";
+import json_str from "./mysql_conn";
 
 function initMap(): void {
   const map = new google.maps.Map(
@@ -21,22 +21,8 @@ function initMap(): void {
   );
 
   const flightPlanCoordinates = [{"lat": 45.3470145, "lng": -75.7592736}, {"lat": 45.346976, "lng": -75.7594166}, {"lat": 45.3600194, "lng": -75.7676208}, {"lat": 45.41375499999999, "lng": -75.6793472}, {"lat": 45.41586230000001, "lng": -75.673887}, {"lat": 45.4249251, "lng": -75.6876139}, {"lat": 45.4261433, "lng": -75.6879305}, {"lat": 45.4251804, "lng": -75.6902019}];
-  const flightPath = new google.maps.Polyline({
-    path: flightPlanCoordinates,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 2,
-  });
 
-  // const flightPlanCoordinates = connection.query(`select polyline_route from cst8276.polyline`);
-  // const flightPath = new google.maps.Polyline({
-  //   path: flightPlanCoordinates,
-  //   geodesic: true,
-  //   strokeColor: "#FF0000",
-  //   strokeOpacity: 1.0,
-  //   strokeWeight: 2,
-  // });
+  // const flightPlanCoordinates = json_str;
 
   // const flightPlanCoordinates = [
   //   { lat: 37.772, lng: -122.214 },
@@ -44,13 +30,13 @@ function initMap(): void {
   //   { lat: -18.142, lng: 178.431 },
   //   { lat: -27.467, lng: 153.027 },
   // ];
-  // const flightPath = new google.maps.Polyline({
-  //   path: flightPlanCoordinates,
-  //   geodesic: true,
-  //   strokeColor: "#FF0000",
-  //   strokeOpacity: 1.0,
-  //   strokeWeight: 2,
-  // });
+  const flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
 
   flightPath.setMap(map);
 }
