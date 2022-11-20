@@ -26,17 +26,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/google.maps": "^3.48.8",
-    "@types/mysql": "^2.15.21",
-    "typescript": "^4.6.4",
-    "vite": "^2.9.9"
+    "@types/google.maps": "^3.50.4",
+    "@types/node": "^18.11.9",
+    "typescript": "^4.8.4",
+    "vite": "^3.1.7"
   },
   "private": true,
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.3",
-    "requirejs": "^2.3.6",
-    "ts-node": "^10.9.1"
+    "mysql": "^2.18.1"
   }
 }
