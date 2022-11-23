@@ -7,6 +7,9 @@
 // This example creates a 2-pixel-wide red polyline showing the path of
 // the first trans-Pacific flight between Oakland, CA, and Brisbane,
 // Australia which was made by Charles Kingsford Smith.
+//import { createConnection, ConnectionManager , getConnection}from "typeorm";
+import "reflect-metadata";
+import axios from 'axios';
 
 function initMap(): void {
   const map = new google.maps.Map(
@@ -19,16 +22,27 @@ function initMap(): void {
   );
 
   // TODO: need to replace the hard coded Json value, fetch from IO file or MySQL database 
-  const flightPlanCoordinates = [{"lat": 45.3470145, "lng": -75.7592736}, {"lat": 45.346976, "lng": -75.7594166}, {"lat": 45.3600194, "lng": -75.7676208}, {"lat": 45.41375499999999, "lng": -75.6793472}, {"lat": 45.41586230000001, "lng": -75.673887}, {"lat": 45.4249251, "lng": -75.6876139}, {"lat": 45.4261433, "lng": -75.6879305}, {"lat": 45.4251804, "lng": -75.6902019}];
-  const flightPath = new google.maps.Polyline({
-    path: flightPlanCoordinates,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 2,
-  });
+    const instance = axios.create({
+        baseURL: "http://127.0.0.1:5000/",
+        headers: {
+        "Content-Type": "application/json",
+        },
+    });
+    async function getAllData() {
+        var data = await instance.get("/get_coordinates/1");
+        var flightPlanCoordinates = data.data['route'];
+        const flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+          });
+        
+          flightPath.setMap(map);
+    }
+    getAllData();
 
-  flightPath.setMap(map);
 }
 
 declare global {
@@ -37,4 +51,6 @@ declare global {
   }
 }
 window.initMap = initMap;
+
 export {};
+
