@@ -20,8 +20,30 @@ function initMap(): void {
       mapTypeId: "terrain",
     }
   );
+  // Create Div
+  var div = document.createElement('div');
+  div.style.borderStyle = 'solid';
+  div.style.borderWidth = '0px';
+  div.style.position = 'relative';
+  div.style.cursor = "pointer";
 
-  // TODO: need to replace the hard coded Json value, fetch from IO file or MySQL database 
+  // Create Button
+  var button = document.createElement("button");
+  button.innerHTML = "Click Here for Polygon!";
+  button.style.position = 'absolute';
+  button.style.cursor = "pointer";
+  button.style.height = '50px';
+  button.style.width = '80px';
+  div.appendChild(button);
+
+  // Create onclick method to redirect to another page
+  button.addEventListener("click", function() {
+    window.location.href="indexpolygon.html";
+
+  });
+
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(div);
+
     const instance = axios.create({
         baseURL: "http://127.0.0.1:5000/",
         headers: {
@@ -39,9 +61,18 @@ function initMap(): void {
             strokeWeight: 2,
           });
         
-          flightPath.setMap(map);
+          flightPath.setMap(map);  
+          //center the route      
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0; i < flightPlanCoordinates.length; i++) {
+            bounds.extend(flightPlanCoordinates[0]);
+            bounds.extend(flightPlanCoordinates[i]);
+          }
+          map.fitBounds(bounds);
+
     }
     getAllData();
+
 
 }
 

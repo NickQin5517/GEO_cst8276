@@ -25,7 +25,26 @@ def get_coordinates(route_id):
     message = {'route':data}
     return jsonify(message)  # serialize and use JSON headers
 
+@app.route('/get_location/', methods=['GET'])
+def get_location():
 
+    data = None
+    coordinates = []
+    cnx = mysql.connector.connect(user='DBcst8276', database='cst8276', host='localhost' , port=3306, password='8276')
+    cursor = cnx.cursor()
+    query = (f"SELECT longitude, latitude from geolocation")
+    cursor.execute(query)
+
+    for coordinate in cursor:    
+        lng = json.loads(coordinate[0])
+        lat = json.loads(coordinate[1])
+        data ={"lng":lng, "lat":lat}
+        coordinates.append(data)
+       
+    cursor.close()
+    cnx.close()
+    message = {'coordinates':coordinates}
+    return jsonify(message)  # serialize and use JSON headers
 
 # run app
 app.run(debug=True)
