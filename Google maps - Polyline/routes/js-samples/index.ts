@@ -51,8 +51,9 @@ function initMap(): void {
         },
     });
     async function getAllData() {
-        var data = await instance.get("/get_coordinates/1");
+        var data = await instance.get("/get_coordinates/13");
         var flightPlanCoordinates = data.data['route'];
+        console.log(flightPlanCoordinates)
         const flightPath = new google.maps.Polyline({
             path: flightPlanCoordinates,
             geodesic: true,

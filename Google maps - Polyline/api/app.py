@@ -32,15 +32,16 @@ def get_location():
     coordinates = []
     cnx = mysql.connector.connect(user='DBcst8276', database='cst8276', host='localhost' , port=3306, password='8276')
     cursor = cnx.cursor()
-    query = (f"SELECT longitude, latitude from geolocation")
+    query = (f"SELECT json from geolocation")
     cursor.execute(query)
 
     for coordinate in cursor:    
-        lng = json.loads(coordinate[0])
-        lat = json.loads(coordinate[1])
-        data ={"lng":lng, "lat":lat}
+        # lng = json.loads(coordinate[0])
+        # lat = json.loads(coordinate[1])
+        data = json.loads(coordinate[0])
+        # data ={"lng":lng, "lat":lat}
         coordinates.append(data)
-       
+    print(coordinates)   
     cursor.close()
     cnx.close()
     message = {'coordinates':coordinates}

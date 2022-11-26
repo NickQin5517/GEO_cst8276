@@ -11,10 +11,16 @@ mydb = mysql.connector.connect(user='DBcst8276', password='8276',
 
 mycursor = mydb.cursor()
 mycursor.execute("select start_point_address, end_point_address from " + table_name)
-
 # rows contains all the point pairs
 rows = mycursor.fetchall()
-
+# create second connection
+table_name2 = 'cst8276.geolocation'
+mydb2 = mysql.connector.connect(user='DBcst8276', password='8276',
+                               host='127.0.0.1',
+                               database='cst8276')
+mycursor2 = mydb2.cursor()
+mycursor2.execute("select * from " + table_name2)
+rows2 = mycursor2.fetchall()
 
 # print(len(rows))
 
@@ -29,6 +35,25 @@ def insert_db_route(start_point, end_point, locations):
     mycursor.execute(sql)
     mydb.commit()
     print(mycursor.rowcount, "record updated.")
+
+# insert coordinates from table geolocation
+def insert_db_coordinates(start_point, end_point):
+    index = 0
+    while index < len(rows2):
+        if start_point == rows2[index][1]:
+            sql2 = "UPDATE " + table_name + " SET start_lat = %s, start_lng = %s WHERE start_point_address = '" \
+                + start_point + "'"
+            val = (rows2[index][3], rows2[index][2])
+            mycursor2.execute(sql2, val)
+            mydb2.commit()
+        if end_point == rows2[index][1]:
+            sql2 = "UPDATE " + table_name + " SET end_point_lat = %s, end_point_lng = %s WHERE end_point_address = '" \
+                + end_point + "'"
+            val = (rows2[index][3], rows2[index][2])
+            mycursor2.execute(sql2, val)
+            mydb2.commit()
+        index = index + 1
+            
 
 
 index = 0
@@ -56,6 +81,7 @@ while index < len(rows):
     # insert json data into the database
     # insert_db_route(insert_json)
     insert_db_route(rows[index][0], rows[index][1], insert_json)
+    insert_db_coordinates(rows[index][0], rows[index][1])
     index = index + 1
 
 mydb.close()
